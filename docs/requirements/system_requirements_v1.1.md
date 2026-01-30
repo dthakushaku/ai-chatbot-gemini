@@ -71,9 +71,9 @@ End User → Chatbot UI → (Proxy API) → Google Gemini API
 | SR-09  | Emoji picker                    | Chọn emoji và chèn vào textarea                      |
 | SR-10  | Thinking indicator              | Hiển thị trạng thái “thinking” trong thời gian chờ AI  |
 | SR-11  | Xử lý lỗi                       | Hiển thị lỗi API/network, không làm crash UI |
-| SR-12  | Lưu lịch sử chat                | Lưu chat history vào localStorage để giữ khi refresh |
-| SR-13  | Giới hạn upload ảnh             | Giới hạn 5MB, chỉ chấp nhận PNG/JPG/JPEG/WebP |
-| SR-14  | Auto-detect ngôn ngữ            | Chatbot mặc định tiếng Anh, tự động phát hiện ngôn ngữ user |
+| SR-12  | (OP-03) Lưu lịch sử chat                | Lưu chat history vào localStorage để giữ khi refresh |
+| SR-13  | (OP-04) Giới hạn upload ảnh             | Giới hạn 5MB, chỉ chấp nhận PNG/JPG/JPEG/WebP |
+| SR-14  |(OP-02) Auto-detect ngôn ngữ            | Chatbot mặc định tiếng Anh, tự động phát hiện ngôn ngữ user |
 
 ---
 
