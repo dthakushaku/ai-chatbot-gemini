@@ -61,7 +61,7 @@ End User → Chatbot UI → (Proxy API) → Google Gemini API
 | ID     | Mô tả ngắn                      | Mô tả chi tiết                                   |
 |--------|----------------------------------|--------------------------------------------------|
 | SR-01  | Hiển thị chatbot widget         | Toggler góc phải dưới màn hình, cho phép mở/đóng popup chatbot                        |
-| SR-02  | Giao diện chatbot               | Popup gồm Header, Body, Footer                      |
+| SR-02  | Tự động co giãn ô nhập               | Textarea tự tăng chiều cao theo nội dung.                     |
 | SR-03  | Tin nhắn chào mừng              | Hiển thị tin nhắn bot mặc định khi mở lần đầu   |
 | SR-04  | Gửi tin nhắn người dùng         | Hiển thị user-message khi gửi tin nhắn              |
 | SR-05  | Gửi request tới AI              | Gửi text/image tới Gemini API                        |
