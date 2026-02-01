@@ -10,8 +10,9 @@ const closeChatbot = document.querySelector("#close-chatbot");
 
 // const API_KEY = "PASTE-YOUR-API-KEY";
 // const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+// Nơi lấy API https://aistudio.google.com/api-keys
 
-const API_KEY = "AIzaSyCadz4RjEAUoCtcPj17mRaHxUS9R9jc38Q";
+const API_KEY = "PASTE-YOUR-API-KEY";
 const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-lite:generateContent?key=${API_KEY}`;
 // Initialize user message and file data
 const userData = {
