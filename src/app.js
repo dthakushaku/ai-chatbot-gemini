@@ -2,14 +2,14 @@
 /*************************************************
  * 1 - Constants (BR / SR)
  *************************************************/
+// Nơi lấy API https://aistudio.google.com/api-keys
 
 // const API_KEY = "PASTE-YOUR-API-KEY";
 // const API_URL =
 //     "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key==${API_KEY}" ;
-// Nơi lấy API https://aistudio.google.com/api-keys
 
-const API_KEY = "PASTE-YOUR-API-KEY";
-const API_URL = `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash-lite:generateContent?key=${API_KEY}`;
+import { API_KEY } from "./config.js";
+import { API_URL } from "./config.js";
 
 const STORAGE_KEY = "chatHistory";
 const MAX_MESSAGES = 50;
@@ -39,8 +39,16 @@ const fileInput = document.querySelector("#file-input");
 const fileUploadWrapper = document.querySelector(".file-upload-wrapper");
 const fileCancelBtn = document.querySelector("#file-cancel");
 
+
 /*************************************************
- * Storage (BR-LS-01 ~ 04)
+ * Utilities
+ *************************************************/
+function scrollToBottom() {
+  chatBody.scrollTo({ top: chatBody.scrollHeight, behavior: "smooth" });
+}
+
+/*************************************************
+ * 4 - Storage (BR-LS-01 ~ 04)
  *************************************************/
 function loadChatHistory() {
   try {
@@ -61,9 +69,106 @@ function saveChatHistory() {
 }
 
 /*************************************************
+ * 5 - Validation
+ *************************************************/
+function canSendMessage(text, hasImage) {
+  return text.length > 0 || hasImage;
+}
+
+function validateImage(file) {
+  if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+    alert("Unsupported image format.");
+    return false;
+  }
+  if (file.size > MAX_IMAGE_SIZE) {
+    alert("Image size must be 5MB or less.");
+    return false;
+  }
+  return true;
+}
+
+/*************************************************
+ * 6 - UI Rendering
+ *************************************************/
+function createMessageElement(role, html) {
+  const div = document.createElement("div");
+  div.classList.add("message", role === "user" ? "user-message" : "bot-message");
+  div.innerHTML = html;
+  return div;
+}
+
+
+function renderMessage(role, text) {
+  const html =
+    role === "user"
+      ? `<div class="message-text">${text}</div>`
+      : `<span class="bot-avatar material-symbols-rounded">smart_toy</span>
+        <div class="message-text">${text} </div>`;
+
+  chatBody.appendChild(createMessageElement(role, html));
+  scrollToBottom();
+}
+
+function renderThinking() {
+  const html = `
+    <svg class="bot-avatar" ...></svg>
+    <div class="message-text">
+      <div class="thinking-indicator">
+        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      </div>
+    </div>`;
+  const div = createMessageElement("bot", html);
+  div.classList.add("thinking");
+  chatBody.appendChild(div);
+  scrollToBottom();
+  return div;
+}
+
+function replaceThinking(div, text, isError = false) {
+  div.classList.remove("thinking");
+  const textEl = div.querySelector(".message-text");
+  textEl.innerText = text;
+  if (isError) textEl.style.color = "red";
+}
+
+/*************************************************
+ * 8 - Core Flow
+ *************************************************/
+async function handleSendMessage(e) {
+  e.preventDefault();
+
+  const text = messageInput.value.trim();
+  const hasImage = !!currentAttachment;
+
+  if (!canSendMessage(text, hasImage)) return;
+
+  // Render user message
+  renderMessage("user", text);
+  chatHistory.push({ role: "user", text });
+  saveChatHistory();
+
+  // Reset input & attachment
+  messageInput.value = "";
+  fileUploadWrapper.classList.remove("file-uploaded");
+  currentAttachment = null;
+
+  // Thinking indicator
+  const thinkingDiv = renderThinking();
+
+  try {
+    const botText = await callGeminiAPI();
+    replaceThinking(thinkingDiv, botText);
+    chatHistory.push({ role: "model", text: botText });
+    saveChatHistory();
+  } catch (err) {
+    replaceThinking(thinkingDiv, err.message, true);
+  }
+}
+
+/*************************************************
  * 9 - Events
  *************************************************/
-// chatForm.addEventListener("submit", handleSendMessage);
+chatForm.addEventListener("submit", handleSendMessage);
 
 messageInput.addEventListener("keydown", e => {
   if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 768) {

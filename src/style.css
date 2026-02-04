@@ -235,6 +235,15 @@ body.show-chatbot .chatbot-popup {
     background: #5350C4;
 }
 
+.chat-form .chat-controls #send-message:hover {
+    background: #3d39ac;
+}
+
+/* Show send button only when input is valid (not empty) */
+.chat-form .message-input:valid~.chat-controls #send-message {
+    display: block;
+}
+
 .chat-form .file-upload-wrapper {
     position: relative;
     height: 35px;

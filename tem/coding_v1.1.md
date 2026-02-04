@@ -131,6 +131,7 @@ function createMessageElement(role, html) {
   return div;
 }
 
+
 function renderMessage(role, text) {
   const html =
     role === "user"
