@@ -3,11 +3,6 @@
  * 1 - Constants (BR / SR)
  *************************************************/
 
-
-// const API_KEY = "PASTE-YOUR-API-KEY";
-// const API_URL =
-//     "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key==${API_KEY}" ;
-
 import { API_KEY } from "./config.js";
 import { API_URL } from "./config.js";
 
@@ -97,7 +92,6 @@ function createMessageElement(role, html) {
   return div;
 }
 
-
 function renderMessage(role, text) {
   const html =
     role === "user"
@@ -111,7 +105,7 @@ function renderMessage(role, text) {
 
 function renderThinking() {
   const html = `
-    <svg class="bot-avatar" ...></svg>
+    <span class="bot-avatar material-symbols-rounded">smart_toy</span>
     <div class="message-text">
       <div class="thinking-indicator">
         <div class="dot"></div><div class="dot"></div><div class="dot"></div>
@@ -129,6 +123,50 @@ function replaceThinking(div, text, isError = false) {
   const textEl = div.querySelector(".message-text");
   textEl.innerText = text;
   if (isError) textEl.style.color = "red";
+}
+
+/*************************************************
+ * 7 - API Call
+ *************************************************/
+async function callGeminiAPI() {
+  // Build request body with chat history
+  const requestBody = {
+    contents: chatHistory.map(msg => ({
+      role: msg.role,
+      parts: [{ text: msg.text }]
+    }))
+  };
+
+  // Add current attachment if exists
+  if (currentAttachment) {
+    const lastMessage = requestBody.contents[requestBody.contents.length - 1];
+    lastMessage.parts.push({
+      inline_data: {
+        mime_type: currentAttachment.mimeType,
+        data: currentAttachment.data
+      }
+    });
+  }
+
+  const requestOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(requestBody)
+  };
+
+  const response = await fetch(API_URL, requestOptions);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error?.message || "API request failed");
+  }
+
+  // Extract bot response text
+  const apiResponseText = data.candidates[0].content.parts[0].text
+    .replace(/\*\*(.*?)\*\*/g, "$1")
+    .trim();
+
+  return apiResponseText;
 }
 
 /*************************************************
