@@ -162,5 +162,6 @@ Dự án được quản lý chặt chẽ thông qua hệ thống tài liệu c�
   / tests
     - unit_tests.js
     - integration_tests.js
-  - README.md
+  README.md
+  .gitignore
 ```
