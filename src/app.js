@@ -2,7 +2,7 @@
 /*************************************************
  * 1 - Constants (BR / SR)
  *************************************************/
-// Nơi lấy API https://aistudio.google.com/api-keys
+
 
 // const API_KEY = "PASTE-YOUR-API-KEY";
 // const API_URL =
