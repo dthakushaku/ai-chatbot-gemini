@@ -1,6 +1,6 @@
 # Business Rules (BR)
 
-**AI Chatbot với Google Gemini API**
+AI Chatbot với Google Gemini API
 
 ```text
 Version : 1.1
