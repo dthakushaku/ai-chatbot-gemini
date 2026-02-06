@@ -5,6 +5,156 @@ version: 1.0
 status : Draft → To be Frozen
 Date : 29/01/2026
 ```
+# 日本語
+
+## 1. プロジェクト概要
+
+チャットボットは、従来の手段に比べて、ユーザーが情報やサービスへ迅速・直感的・便利にアクセスできる重要なインタラクションチャネルとなっています。
+
+本プロジェクト AI Chatbot with Google Gemini API は、Webサイトに組み込み可能な チャットボットウィジェット（embedded widget） を構築することを目的とし、以下を実現します。
+
+- ユーザーが質問を入力し、AIから即時に回答を得られる
+
+- Webサイト上でのユーザーエンゲージメントおよび滞在時間の向上
+
+- コンテンツ案内、サービス相談、簡易的なエンターテインメントの提供
+
+本アプリケーションは HTML / CSS / JavaScript により開発され、Google Gemini API（Free Tier） を統合し、以下の機能をサポートします。
+
+- テキストチャット
+
+- 画像アップロード（Vision）
+
+- 絵文字ピッカー
+Desktop / Mobile 両対応のレスポンシブUI
+
+## 2. 想定ユーザー
+### エンドユーザー（End User）
+
+- 一般ユーザー
+- 学生
+- オフィスワーカー
+
+### 利用シーン
+
+- Web / Mobile ブラウザからWebサイトにアクセス
+
+- AIとのクイックなQ&Aを通じて：
+
+  - サービス内容の確認
+  - 一般的な情報検索
+  - ユーザー体験およびインタラクションの向上
+## 3. 主な機能
+### 3.1 AIとのテキストチャット
+
+- ユーザーが質問を入力すると、Google Gemini により回答が生成される
+- 会話は User / Bot のバブル形式 で表示される
+
+### 3.2 ポップアップ型チャットボットウィジェット
+
+- 画面右下に表示される 開閉ボタン（Toggler）
+- ポップアップ構成：
+  - Header（チャットボットタイトル）
+  - Body（会話履歴）
+  - Footer（入力欄・操作ボタン）
+
+### 3.3 画像アップロード（Vision）
+
+- ユーザーは以下が可能：
+  - デバイスから画像を添付
+  - 送信前に画像プレビューを確認
+  - 選択した画像をキャンセル
+- 画像はプロンプトと共に送信され、AIが画像内容を解析して回答する
+
+### 3.4 絵文字ピッカー
+
+- 絵文字パネルから絵文字を選択
+- 選択した絵文字は カーソル位置 に正しく挿入される
+
+### 3.5 Thinking Indicator
+
+- Iの応答待ち中、「思考中（thinking）」状態を表示
+- 応答取得またはエラー発生時に自動で消去される
+
+### 3.6 レスポンシブUI
+
+- Desktop：固定サイズのポップアップ表示
+- Mobile：全画面表示（入力欄が隠れない設計）
+
+## 4. 業務ルール・ロジック（Business Rules）
+
+- BR-01：入力が空（テキストなし・画像なし）の場合、送信しない
+
+- BR-02：画像送信時：
+  - image/* のみ許可
+  - API送信前に base64 エンコードを行う
+
+- BR-03：1回の送信につき、必ず
+  - 1 user-message
+  - 1 bot-messageを生成する
+
+- BR-04：Thinking indicator は以下の場合に必ず削除される
+  - AI応答を取得した場合
+  - APIエラーが発生した場合
+
+- BR-05：メッセージ送信後、画像アップロード状態をリセットする
+
+## 5. 技術仕様
+### 5.1 フロントエンド
+
+- HTML5
+- CSS3（レスポンシブ、アニメーション）
+- JavaScript（Vanilla JS）
+
+### 5.2 AI / API
+- Google Gemini API（gemini-1.5-flash）
+
+- リクエスト構成：
+  - テキストプロンプト
+  - 画像（base64 + mimeType）
+
+### 5.3 推奨アーキテクチャ
+- デモ環境
+  - フロントエンドから直接 Gemini API を呼び出し（ローカル用途のみ）
+
+- 本番環境
+  - Frontend → Backend Proxy（Node.js / Serverless）
+  - Backend 側で API Key を管理し、Gemini API を呼び出す
+
+### 5.4 非機能要件
+
+- 本番環境では API Key をフロントエンドに露出させない
+
+- 目標レスポンスタイム：通常ネットワーク環境で 5秒以内
+
+- 対応ブラウザ：
+
+  - Desktop：Chrome / Edge
+  - Mobile：Safari iOS / Chrome Android
+
+## 6. 対象外（Out of Scope）
+
+- チャットボットユーザーのログイン／管理
+- サーバー側でのチャット履歴保存
+- ストリーミングレスポンス（文字逐次表示）
+- 管理ダッシュボード
+- 高度なモデレーション／コンテンツフィルタ
+- 多言語自動判定（デフォルト設定外）
+
+## 7. プロジェクトドキュメント構成
+
+本プロジェクトは 高いトレーサビリティ を持つドキュメント体系で管理されます。
+
+- 目的（Goal）
+  - Client Requirements → System Requirements
+
+- ロジック定義
+  - Business Rules → Use Case Specification
+
+- 検証（Validation）
+  - Validation Specification → Test Case Specification
+
+# TIẾNG VIỆT
 ## 1. Giới thiệu dự án
 Chatbot đang trở thành một kênh tương tác quan trọng giúp người dùng tiếp cận thông tin và dịch vụ nhanh chóng, trực quan và thuận tiện hơn so với các hình thức truyền thống.
 
