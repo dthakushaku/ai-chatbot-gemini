@@ -2,7 +2,7 @@
 ```
 Version: 1.1 
 Owner: BrSE Dang
-Status: Draft  
+Status: Draft → To be Frozen
 ```
 
 ## 1. Mục tiêu (Purpose)
